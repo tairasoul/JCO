@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "build": "cd src/cppsrc && g++ -std=c++20 main.cpp -o JCO.exe",
+    "install": "npm i"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5"
+  },
+  "dependencies": {
+    "@fheahdythdr/node-file-dialog": "^1.0.8",
+    "axios": "^1.4.0",
+    "inquirer": "^9.2.7",
+    "inquirer-interrupted-prompt": "^3.0.0",
+    "sharp": "^0.32.1"
+  }
+}
