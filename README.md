@@ -9,5 +9,4 @@ If any of that changes, this will be maintained.
 
 # todo
 
-- figure out where to get fvars from
-  - fvars will be gettable from a local json file, if you need any go [here](https://github.com/fheahdythdr/rco-fflags)
+- nothing until i figure out whether or not rco2 is compromised
