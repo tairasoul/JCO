@@ -3,6 +3,10 @@
 
 In progress. Need to setup installer and actual settings moving.
 
+This will likely not be maintained due to the fork of RCO I made being safe (not using any URL's from l8x)
+
+If any of that changes, this will be maintained.
+
 # todo
 
 - figure out where to get fvars from
