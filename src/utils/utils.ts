@@ -29,7 +29,7 @@ export async function getRobloxVersion() {
 export function getRobloxFolders() {
     const folders = new Array<string>;
     if (fs.existsSync('C:/Program Files (x86)/Roblox')) folders.push('C:/Program Files (x86)/Roblox');
-    if (fs.existsSync(`${process.env.LOCALAPPDATA}/Roblox`)) folders.push('C:/Program Files (x86)/Roblox');
+    if (fs.existsSync(`${process.env.LOCALAPPDATA}/Roblox`)) folders.push(`${process.env.LOCALAPPDATA}/Roblox`);
     return folders
 }
 
