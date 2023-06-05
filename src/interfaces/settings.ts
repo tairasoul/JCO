@@ -1,7 +1,6 @@
-import { Setting } from "./setting";
+import { Setting } from "./setting.js";
 
 export interface Settings {
     enabled: Setting[];
     disabled: Setting[];
-    custom: Setting[];
 }
