@@ -6,4 +6,4 @@ In progress. Need to setup installer and actual settings moving.
 # todo
 
 - figure out where to get fvars from
-  - fvars wil be gettable from a local json file, if you need any go [here](https://github.com/fheahdythdr/rco-fflags)
+  - fvars will be gettable from a local json file, if you need any go [here](https://github.com/fheahdythdr/rco-fflags)
