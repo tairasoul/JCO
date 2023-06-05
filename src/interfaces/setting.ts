@@ -1,4 +1,4 @@
 export interface Setting {
     id: string;
-    set: string | number;
+    set: string | number | boolean;
 }
