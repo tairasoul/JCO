@@ -6,5 +6,4 @@ In progress. Need to setup installer and actual settings moving.
 # todo
 
 - figure out where to get fvars from
-  - do i give the user pre-determined fvars, or do i make it so the user inputs all the fvars they want
-    - i will temporarily make it user-defined fvars until i figure out how to either [parse fvars from here](https://github.com/rbxflags/Flags) or get my own fvar list
+  - fvars wil be gettable from a local json file, if you need any go [here](https://github.com/fheahdythdr/rco-fflags)
