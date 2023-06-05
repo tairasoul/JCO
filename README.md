@@ -1,5 +1,5 @@
 # JCO
-A remake of rco-but-it-uses-different-fflags in NodeJS, due to the original RCO2 being compromised.
+~~A remake of rco-but-it-uses-different-fflags in NodeJS, due to the original RCO2 being compromised.~~ Maybe not compromised. Not sure, [this got changed though](https://cw.rfo.sh/)
 
 In progress. Need to setup installer and actual settings moving.
 
