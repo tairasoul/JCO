@@ -1,8 +1,7 @@
 {
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
-    "@types/inquirer": "^9.0.3",
-    "@types/npm": "^7.19.0"
+    "@types/inquirer": "^9.0.3"
   },
   "dependencies": {
     "axios": "^1.4.0",
@@ -10,7 +9,6 @@
     "fs-extra": "^11.1.1",
     "i": "^0.3.7",
     "inquirer-interrupted-prompt": "^3.0.0",
-    "npm": "^9.7.1",
     "rfo.js": "github:rbxflags/js-api"
   },
   "type": "module"
