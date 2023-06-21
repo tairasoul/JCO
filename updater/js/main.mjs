@@ -110,3 +110,7 @@ copy("definitions/interfaces.js");
 console.log(chalk.bold.green("Moved files."));
 console.log(chalk.bold.green("Removing build dir."));
 fs.rmSync(`${__dirname}/build`, {recursive: true});
+
+fs.writeFileSync(`${__dirname}/Main/package.json`, JSON.stringify(packagedata));
+
+await run(`cd ${__dirname}/Main && npm i`);
