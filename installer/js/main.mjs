@@ -47,9 +47,10 @@ if (!fs.existsSync(`C:/JCO/Runner/Frontend.exe`)) https.get("https://raw.githubu
     res.pipe(stream);
 })
 
-const icon = await get("other/JCOIcon.ico");
-
-await write("Main/data/icon.ico", icon);
+if (!fs.existsSync(`C:/JCO/Runner/Frontend.exe`)) https.get("https://raw.githubusercontent.com/fheahdythdr/JCO/main/other/JCOIcon.ico", (res) => {
+    const stream = fs.createWriteStream(`C:/JCO/Main/data/icon.ico`);
+    res.pipe(stream);
+})
 
 const setup = await get("setup.js");
 
