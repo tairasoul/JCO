@@ -1,5 +1,7 @@
 import { writeFileSync, readFileSync } from "fs";
-import packagejson from "rfo.js/package.json";
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(decodeURIComponent(fileURLToPath(import.meta.url)));
+const packagejson = JSON.parse(readFileSync(`${__dirname}/node_modules/rfo.js/package.json`))
 
 packagejson.type = "module";
 
