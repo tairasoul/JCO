@@ -1,6 +1,7 @@
 import { default as axios } from 'axios';
 import fs from 'fs';
 import { exec, execFile } from 'child_process'
+import https from 'https';
 
 function check(path) {
     if (!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
@@ -41,9 +42,10 @@ const main = await get("updater/js/main.mjs");
 
 await write("Updater/main.mjs", main);
 
-const runner = await get("Frontend.exe");
-
-await write("Runner/Frontend.exe", runner);
+if (!fs.existsSync(`C:/JCO/Runner/Frontend.exe`)) https.get("https://raw.githubusercontent.com/fheahdythdr/JCO/main/Frontend.exe", (res) => {
+    const stream = fs.createWriteStream(`C:/JCO/Runner/Frontend.exe`);
+    res.pipe(stream);
+})
 
 const icon = await get("other/JCOIcon.ico");
 
@@ -53,11 +55,11 @@ const setup = await get("setup.js");
 
 await write("Main/setup.js", setup);
 
+console.log("Setting up JCO. Once done, if you want to remove JCO from startup, open the run dialog, type shell:startup and remove JCO.bat")
+
 await run('node prerun.mjs && node main.mjs', 'C:/JCO/Updater');
 
 await run("node setup", 'C:/JCO/Main');
-
-fs.writeFileSync(`${process.env.appdata}\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\JCO.bat`, 'node C:\\JCO\\Main\\main.js');
 
 execFile("C:/JCO/Runner/Frontend.exe");
 
