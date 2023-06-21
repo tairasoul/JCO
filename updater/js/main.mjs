@@ -97,7 +97,9 @@ try {
 console.log(chalk.bold.red("Moving new files."))
 
 function copy(file) {
-    fs.copyFileSync(`${__dirname}/build/dist/${file}`, `${__dirname}/Main/${file}`);
+    try {
+        fs.copyFileSync(`${__dirname}/build/dist/${file}`, `${__dirname}/Main/${file}`);
+    } catch {}
 }
 
 copy("main.js");
