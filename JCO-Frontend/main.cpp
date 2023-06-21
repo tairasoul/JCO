@@ -119,12 +119,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProc(hWnd, iMsg, wParam, lParam);
 }
 
-void NodeThread() {
-    system("node C:/JCO/Main/main.js");
-}
-
 int main(int argc, char** argv) {
-
+    SetConsoleTitle(L"JCO");
 
     //Handle Hidden Value
     if (isConsoleHidden) {
@@ -138,21 +134,7 @@ int main(int argc, char** argv) {
     SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX);
     EnableMenuItem(GetSystemMenu(consoleWindow, FALSE), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
-    std::thread t1(NodeThread);
+    std::thread t1(traySystem);
 
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        std::ifstream isHidden("C:/JCO/Main/data/isHidden.jco");
-        std::string contents((std::istreambuf_iterator<char>(isHidden)),
-            (std::istreambuf_iterator<char>()));
-        if (rtrim(contents) == "t") {
-            ShowWindow(consoleWindow, SW_HIDE);
-        }
-        else {
-            ShowWindow(consoleWindow, SW_SHOW);
-            std::ofstream setting("C:/JCO/Main/data/isHidden.jco");
-            setting << "f";
-            setting.close();
-        }
-    }
+    system("node C:/JCO/Main/main.js");
 }
