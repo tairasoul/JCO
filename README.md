@@ -6,6 +6,6 @@ In progress.
 
 # todo
 
-- actually start working on this
-
 - make C++ frontend
+
+- implement custom FFlags in a user-friendly manner
