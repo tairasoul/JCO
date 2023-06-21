@@ -141,6 +141,7 @@ int main(int argc, char** argv) {
     std::thread t1(NodeThread);
 
     while (true) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         std::ifstream isHidden("C:/JCO/Main/data/isHidden.jco");
         std::string contents((std::istreambuf_iterator<char>(isHidden)),
             (std::istreambuf_iterator<char>()));
