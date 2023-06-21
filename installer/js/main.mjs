@@ -62,6 +62,6 @@ await run('node prerun.mjs && node main.mjs', 'C:/JCO/Updater');
 
 await run("node setup", 'C:/JCO/Main');
 
-execFile("C:/JCO/Runner/Frontend.exe");
+fs.writeFileSync(`${process.env.appdata}/Microsoft/Windows/Start Menu/Programs/Start-up/JCO.bat`, 'start C:\JCO\Runner\Frontend.exe')
 
 process.exit(0);
