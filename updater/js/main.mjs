@@ -101,11 +101,9 @@ function copy(file) {
 }
 
 copy("main.js");
-copy("main.d.ts");
 fs.mkdirSync(`${__dirname}/Main/lib`);
 fs.mkdirSync(`${__dirname}/Main/definitions`);
 copy("lib/searcher.js");
-copy("definitions/index.d.ts");
 copy("definitions/index.js");
 copy("definitions/interfaces.js");
 
