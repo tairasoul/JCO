@@ -113,7 +113,7 @@ async function init() {
         data.preprocessed[0].Experimental.enabled = enabled.Experimental.enabled;
         data.preprocessed[0].Experimental.features[0].value = enabled.Experimental.value;
     }
-    console.log(chalk.bold.green("Successfully setup JCO."))
+    console.log(chalk.bold.green("Successfully setup JCO. To hide this terminal window, click JCO's tray icon in the system tray (bottom right)."))
     // completed setup
     data.setup = true
 }
@@ -251,11 +251,6 @@ const questions = {
                 fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify(data.enabled, null, 4));
             }
             ask();
-        }
-    },
-    "Hide Terminal": {
-        execute: async () => {
-            fs.writeFileSync(`${root}\\data\\isHidden.jco`, 't');
         }
     }
 }
