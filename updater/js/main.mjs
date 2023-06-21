@@ -86,16 +86,11 @@ fs.rmSync(`${__dirname}/build/package-lock.json`, {recursive: true});
 fs.rmSync(`${__dirname}/build/package.json`, {recursive: true});
 fs.rmSync(`${__dirname}/build/tsconfig.json`, {recursive: true});
 
-console.log(chalk.bold.red("Removing outdated files."))
-
 try {
+    console.log(chalk.bold.red("Removing outdated files."))
     fs.rmSync(`${__dirname}/Main/main.js`, {recursive: true});
-    fs.rmSync(`${__dirname}/Main/main.d.ts`, {recursive: true});
     fs.rmSync(`${__dirname}/Main/lib/searcher.js`, {recursive: true});
-    fs.rmSync(`${__dirname}/Main/lib/searcher.d.ts`, {recursive: true});
     fs.rmSync(`${__dirname}/Main/definitions/index.js`, {recursive: true});
-    fs.rmSync(`${__dirname}/Main/definitions/index.d.ts`, {recursive: true});
-    fs.rmSync(`${__dirname}/Main/definitions/interfaces.d.ts`, {recursive: true});
     fs.rmSync(`${__dirname}/Main/definitions/interfaces.js`, {recursive: true});
 } catch {}
 
@@ -110,10 +105,8 @@ copy("main.d.ts");
 fs.mkdirSync(`${__dirname}/Main/lib`);
 fs.mkdirSync(`${__dirname}/Main/definitions`);
 copy("lib/searcher.js");
-copy('lib/searcher.d.ts');
 copy("definitions/index.d.ts");
 copy("definitions/index.js");
-copy("definitions/interfaces.d.ts");
 copy("definitions/interfaces.js");
 
 console.log(chalk.bold.green("Moved files."));
