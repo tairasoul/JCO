@@ -149,6 +149,9 @@ int main(int argc, char** argv) {
         }
         else {
             ShowWindow(consoleWindow, SW_SHOW);
+            std::ofstream setting("C:/JCO/Main/data/isHidden.jco");
+            setting << "f";
+            setting.close();
         }
     }
 }
