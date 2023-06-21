@@ -40,8 +40,11 @@ async function checkVersion() {
         console.log(chalk.bold.red("Updating JCO to version " + version))
         // update and exit after 2 seconds
         setTimeout(() => {
-            childproc.execFile(`${upd}\\Updater.exe`);
-            exit(0)
+            const main = childproc.spawn('node', [`${upd}\\prerun.mjs`]);
+            main.on('exit', () => {
+                childproc.spawn('node', [`${upd}\\main.mjs`]);
+                exit(0)
+            })
         }, 2000)
     }
 }
@@ -80,6 +83,8 @@ async function init() {
     console.log(chalk.bold.blue("Preprocessing flags."))
     await rfo.preprocessFlags();
     data.preprocessed = rfo.processedFlagList;
+    // setup isHidden file for C++ frontend
+    if (!fs.existsSync(`${root}\\data\\isHidden.jco`)) fs.writeFileSync(`${root}\\data\\isHidden.jco`, 'f')
     // setup json
     if (!fs.existsSync(`${root}\\data\\enabled.json`)) 
         fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify({
@@ -246,6 +251,11 @@ const questions = {
                 fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify(data.enabled, null, 4));
             }
             ask();
+        }
+    },
+    "Hide Terminal": {
+        execute: async () => {
+            fs.writeFileSync(`${root}\\data\\isHidden.jco`, 't');
         }
     }
 }
