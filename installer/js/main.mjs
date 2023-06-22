@@ -1,7 +1,10 @@
 import { default as axios } from 'axios';
 import fs from 'fs';
-import { exec, execFile } from 'child_process'
+import { exec, execFile, execSync } from 'child_process'
 import https from 'https';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(decodeURIComponent(fileURLToPath(import.meta.url)));
 
 function check(path) {
     if (!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
@@ -56,12 +59,24 @@ const setup = await get("setup.js");
 
 await write("Main/setup.js", setup);
 
-console.log("Setting up JCO. Once done, if you want to remove JCO from startup, open the run dialog, type shell:startup and remove JCO.bat")
+console.log("Setting up JCO. Once done, if you want to remove JCO from startup, run uninstall.bat. JCO itself will still be in your C: drive.")
 
 await run('node prerun.mjs && node main.mjs', 'C:/JCO/Updater');
 
 await run("node setup", 'C:/JCO/Main');
 
-fs.writeFileSync(`${process.env.appdata}/Microsoft/Windows/Start Menu/Programs/Start-up/JCO.bat`, 'start C:\JCO\Runner\Frontend.exe')
+if (fs.existsSync(`${process.env.appdata}/Microsoft/Windows/Start Menu/Programs/Start-up/JCO.bat`)) fs.rmSync(`${process.env.appdata}/Microsoft/Windows/Start Menu/Programs/Start-up/JCO.bat`);
+
+const tempbat = `${__dirname}/setup.bat`;
+
+fs.writeFileSync(tempbat, 'reg add HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /v JCO /t REG_SZ /d C:\\JCO\\Runner\\Frontend.exe /f');
+
+execSync(tempbat);
+
+fs.rmSync(tempbat);
+
+const uninstallbat = `${__dirname}/uninstall.bat`;
+
+fs.writeFileSync(uninstallbat, "reg delete HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /v JCO /f")
 
 process.exit(0);
