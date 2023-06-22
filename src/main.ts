@@ -12,7 +12,7 @@ interrupt.fromAll(inquirer);
 
 const root = "C:\\JCO\\Main";
 const upd = "C:\\JCO\\Updater"
-const JCOversion = "1.0.0";
+const JCOversion = "1.0.1";
 
 const searcher = new Searcher();
 
