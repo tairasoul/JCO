@@ -276,7 +276,9 @@ async function ask() {
 }
 
 setInterval(async () => {
+    // find roblox each time just incase it updates while JCO is active
+    await rfo.findRoblox();
     rfo.applyFlags();
-}, 5000)
+}, 20000)
 
 ask();
