@@ -9,3 +9,5 @@ Hide the terminal by pressing it's tray icon in the bottom right.
 - implement custom FFlags in a user-friendly manner
 
 - add a custom flaglist containing the GraphicsBar json, that's missing for some reason
+
+- add a registry key to Run instead of making a bat file in shell:startup
