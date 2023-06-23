@@ -77,6 +77,20 @@ fs.rmSync(tempbat);
 
 const uninstallbat = `${__dirname}/uninstall.bat`;
 
-fs.writeFileSync(uninstallbat, "reg delete HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /v JCO /f")
+fs.writeFileSync(uninstallbat, "reg delete HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /v JCO /f");
+
+fs.mkdirSync(`C:/JCO/Installer`);
+
+fs.copyFileSync(`${__dirname}/main.mjs`, `C:/JCO/Installer/main.mjs`);
+
+fs.copyFileSync(`${__dirname}/prerun.mjs`, `C:/JCO/Installer/prerun.mjs`);
+
+fs.writeFileSync(`C:/JCO/Installer/run.bat`, 
+`node %cd%/prerun.mjs
+
+node %cd%/main.mjs
+
+start C:\\JCO\\Runner\\Frontend.exe`
+)
 
 process.exit(0);
