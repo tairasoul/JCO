@@ -25,25 +25,20 @@ const run = async (cmd, dir) => {
     await new Promise((resolve) => child.on('close', resolve));
 };
 
-const get = async (path) => {
-    const url = `${baseURL}/${path}`;
-    const data = (await axios.get(url)).data;
-    return data;
+const write = async (path, url) => {
+    const fullURL = `${baseURL}${url}`;
+    return new Promise((resolve) => {
+        https.get(fullURL, (res) => {
+            const stream = fs.createWriteStream(path);
+            res.pipe(stream);
+            stream.on('close', resolve);
+        })
+    })
 }
 
-const write = async (base, data) => {
-    const path = `C:/JCO/${base}`;
-    if (typeof data == 'object') fs.writeFileSync(path, JSON.stringify(data));
-    else fs.writeFileSync(path, data);
-}
+await write("Updater/prerun.mjs", "updater/js/prerun.mjs");
 
-const prerun = await get("updater/js/prerun.mjs");
-
-await write("Updater/prerun.mjs", prerun);
-
-const main = await get("updater/js/main.mjs");
-
-await write("Updater/main.mjs", main);
+await write("Updater/main.mjs", "updater/js/main.mjs");
 
 if (!fs.existsSync(`C:/JCO/Runner/Frontend.exe`)) https.get("https://raw.githubusercontent.com/fheahdythdr/JCO/main/Frontend.exe", (res) => {
     const stream = fs.createWriteStream(`C:/JCO/Runner/Frontend.exe`);
@@ -55,9 +50,7 @@ if (!fs.existsSync(`C:/JCO/Main/data/icon.ico`)) https.get("https://raw.githubus
     res.pipe(stream);
 })
 
-const setup = await get("setup.js");
-
-await write("Main/setup.js", setup);
+await write("Main/setup.js", "setup.js");
 
 console.log("Setting up JCO. Once done, if you want to remove JCO from startup, run uninstall.bat. JCO itself will still be in your C: drive.")
 
