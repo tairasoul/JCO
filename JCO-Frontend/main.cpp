@@ -136,5 +136,10 @@ int main(int argc, char** argv) {
 
     std::thread t1(traySystem);
 
-    system("node C:/JCO/Main/main.js");
+    while (true) {
+        system("node C:/JCO/Main/main.js");
+        std::cout << "JCO has crashed. Restarting in 5 seconds.";
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        system("cls");
+    }
 }
