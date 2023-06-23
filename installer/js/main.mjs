@@ -39,15 +39,11 @@ await write("Updater/prerun.mjs", "updater/js/prerun.mjs");
 
 await write("Updater/main.mjs", "updater/js/main.mjs");
 
-if (!fs.existsSync(`C:/JCO/Runner/Frontend.exe`)) https.get("https://raw.githubusercontent.com/fheahdythdr/JCO/main/Frontend.exe", (res) => {
-    const stream = fs.createWriteStream(`C:/JCO/Runner/Frontend.exe`);
-    res.pipe(stream);
-})
+await write("Runner/Frontend.exe", "Frontend.exe");
 
-if (!fs.existsSync(`C:/JCO/Main/data/icon.ico`)) https.get("https://raw.githubusercontent.com/fheahdythdr/JCO/main/other/JCOIcon.ico", (res) => {
-    const stream = fs.createWriteStream(`C:/JCO/Main/data/icon.ico`);
-    res.pipe(stream);
-})
+await write("Main/data/icon.ico", "other/JCOIcon.ico");
+
+await write("Main/data/icon.png", "other/JCOIcon.png")
 
 await write("Main/setup.js", "setup.js");
 
