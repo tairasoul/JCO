@@ -12,7 +12,7 @@ interrupt.fromAll(inquirer);
 
 const root = "C:\\JCO\\Main";
 const upd = "C:\\JCO\\Updater"
-const JCOversion = "1.0.1";
+const JCOversion = "1.0.2";
 
 const searcher = new Searcher();
 
@@ -33,19 +33,23 @@ const prompt = async (config: defs.interfaces.InquirerConfig) => {
 }
 
 async function checkVersion() {
-    // get version
-    const version = (await axios.get("https://raw.githubusercontent.com/fheahdythdr/JCO/main/version.jco")).data.trim();
-    if (version != JCOversion) {
-        // inform user
-        console.log(chalk.bold.red("Updating JCO to version " + version))
-        // update and exit after 2 seconds
-        setTimeout(() => {
-            const main = childproc.spawn('node', [`${upd}\\prerun.mjs`]);
-            main.on('exit', () => {
-                childproc.spawn('node', [`${upd}\\main.mjs`]);
-                exit(0)
-            })
-        }, 2000)
+    try {
+        // get version
+        const version = (await axios.get("https://raw.githubusercontent.com/fheahdythdr/JCO/main/version.jco")).data.trim();
+        if (version != JCOversion) {
+            // inform user
+            console.log(chalk.bold.red("Updating JCO to version " + version))
+            // update and exit after 2 seconds
+            setTimeout(() => {
+                const main = childproc.spawn('node', [`${upd}\\prerun.mjs`]);
+                main.on('exit', () => {
+                    childproc.spawn('node', [`${upd}\\main.mjs`]);
+                    exit(0)
+                })
+            }, 2000)
+        }
+    } catch {
+        console.log(chalk.bold.red("Could not get JCO version. JCO will continue anyways."))
     }
 }
 
