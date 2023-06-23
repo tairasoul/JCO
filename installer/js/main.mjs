@@ -1,4 +1,3 @@
-import { default as axios } from 'axios';
 import fs from 'fs';
 import { exec, execFile, execSync } from 'child_process'
 import https from 'https';
@@ -29,7 +28,7 @@ const write = async (path, url) => {
     const fullURL = `${baseURL}${url}`;
     return new Promise((resolve) => {
         https.get(fullURL, (res) => {
-            const stream = fs.createWriteStream(path);
+            const stream = fs.createWriteStream(`C:/JCO/${path}`);
             res.pipe(stream);
             stream.on('close', resolve);
         })
