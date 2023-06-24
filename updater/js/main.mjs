@@ -72,7 +72,7 @@ await run(`cd ${__dirname}/build && npm install ${toInstall.trim()}`);
 
 await run(`cd ${__dirname}/build && npm install git+https://github.com/rbxflags/js-api`)
 
-if (!test("tsc -v")) await run("npm install tsc")
+if (!test("tsc -v")) await run("npm install -g tsc")
 
 console.log(chalk.bold.blue("Building from source."))
 
