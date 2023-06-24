@@ -10,3 +10,4 @@ const run = async (cmd) => {
 };
 
 await run("npm i axios")
+await run("npm i -g tsc");
