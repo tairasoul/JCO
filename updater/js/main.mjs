@@ -89,9 +89,8 @@ fs.rmSync(`${__dirname}/build/tsconfig.json`, {recursive: true});
 try {
     console.log(chalk.bold.red("Removing outdated files."))
     fs.rmSync(`${__dirname}/Main/main.js`, {recursive: true, force: true});
-    fs.rmSync(`${__dirname}/Main/lib/searcher.js`, {recursive: true, force: true});
-    fs.rmSync(`${__dirname}/Main/definitions/index.js`, {recursive: true, force: true});
-    fs.rmSync(`${__dirname}/Main/definitions/interfaces.js`, {recursive: true, force: true});
+    fs.rmSync(`${__dirname}/Main/lib/`, {recursive: true, force: true});
+    fs.rmSync(`${__dirname}/Main/definitions/`, {recursive: true, force: true});
 } catch {}
 
 console.log(chalk.bold.red("Moving new files."))
