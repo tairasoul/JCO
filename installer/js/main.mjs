@@ -57,7 +57,7 @@ if (fs.existsSync(`${process.env.appdata}/Microsoft/Windows/Start Menu/Programs/
 
 const tempbat = `${__dirname}/setup.bat`;
 
-fs.writeFileSync(tempbat, 'reg add HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /v JCO /t REG_SZ /d C:\\JCO\\Runner\\Frontend.exe /f');
+fs.writeFileSync(tempbat, 'reg add HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /v JCO /t REG_SZ /d C:\\JCO\\Runner\\run.bat /f');
 
 execSync(tempbat);
 
@@ -67,7 +67,9 @@ const uninstallbat = `${__dirname}/uninstall.bat`;
 
 fs.writeFileSync(uninstallbat, "reg delete HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /v JCO /f");
 
-fs.mkdirSync(`C:/JCO/Installer`);
+try {
+    fs.mkdirSync(`C:/JCO/Installer`);
+} catch {}
 
 fs.copyFileSync(`${__dirname}/main.mjs`, `C:/JCO/Installer/main.mjs`);
 
@@ -80,5 +82,17 @@ node %cd%/main.mjs
 
 start C:\\JCO\\Runner\\Frontend.exe`
 )
+
+fs.writeFileSync('C:/JCO/Runner/run.bat', 
+`sleep 15
+
+start Frontend.exe`
+)
+
+try {
+    fs.mkdirSync(`C:/JCO/Main/flaglists`);
+
+    fs.symlinkSync('C:/JCO/Main/flaglists', 'C:/JCO/CustomFlaglists');
+} catch {}
 
 process.exit(0);
