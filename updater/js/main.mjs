@@ -66,40 +66,42 @@ console.log(chalk.bold.blue("Building from source."))
 
 execSync(`cd ${__dirname}/build && npx tsc`);
 
-console.log(chalk.bold.blue("Removing unnecessary files."))
+setTimeout(async () => {
+    console.log(chalk.bold.blue("Removing unnecessary files."))
 
-fs.rmSync(`${__dirname}/build/src`, {recursive: true});
-fs.rmSync(`${__dirname}/build/node_modules`, {recursive: true});
-fs.rmSync(`${__dirname}/build/package-lock.json`, {recursive: true});
-fs.rmSync(`${__dirname}/build/package.json`, {recursive: true});
-fs.rmSync(`${__dirname}/build/tsconfig.json`, {recursive: true});
+    fs.rmSync(`${__dirname}/build/src`, {recursive: true});
+    fs.rmSync(`${__dirname}/build/node_modules`, {recursive: true});
+    fs.rmSync(`${__dirname}/build/package-lock.json`, {recursive: true});
+    fs.rmSync(`${__dirname}/build/package.json`, {recursive: true});
+    fs.rmSync(`${__dirname}/build/tsconfig.json`, {recursive: true});
 
-try {
-    console.log(chalk.bold.red("Removing outdated files."))
-    fs.rmSync(`${__dirname}/Main/main.js`, {recursive: true, force: true});
-    fs.rmSync(`${__dirname}/Main/lib/`, {recursive: true, force: true});
-    fs.rmSync(`${__dirname}/Main/definitions/`, {recursive: true, force: true});
-} catch {}
-
-console.log(chalk.bold.red("Moving new files."))
-
-function copy(file) {
     try {
-        fs.copyFileSync(`${__dirname}/build/dist/${file}`, `${__dirname}/Main/${file}`);
+        console.log(chalk.bold.red("Removing outdated files."))
+        fs.rmSync(`${__dirname}/Main/main.js`, {recursive: true, force: true});
+        fs.rmSync(`${__dirname}/Main/lib/`, {recursive: true, force: true});
+        fs.rmSync(`${__dirname}/Main/definitions/`, {recursive: true, force: true});
     } catch {}
-}
 
-copy("main.js");
-fs.mkdirSync(`${__dirname}/Main/lib`);
-fs.mkdirSync(`${__dirname}/Main/definitions`);
-copy("lib/searcher.js");
-copy("definitions/index.js");
-copy("definitions/interfaces.js");
+    console.log(chalk.bold.red("Moving new files."))
 
-console.log(chalk.bold.green("Moved files."));
-console.log(chalk.bold.green("Removing build dir."));
-fs.rmSync(`${__dirname}/build`, {recursive: true});
+    function copy(file) {
+        try {
+            fs.copyFileSync(`${__dirname}/build/dist/${file}`, `${__dirname}/Main/${file}`);
+        } catch {}
+    }
 
-fs.writeFileSync(`${__dirname}/Main/package.json`, JSON.stringify(packagedata));
+    copy("main.js");
+    fs.mkdirSync(`${__dirname}/Main/lib`);
+    fs.mkdirSync(`${__dirname}/Main/definitions`);
+    copy("lib/searcher.js");
+    copy("definitions/index.js");
+    copy("definitions/interfaces.js");
 
-await run(`cd ${__dirname}/Main && npm i`);
+    console.log(chalk.bold.green("Moved files."));
+    console.log(chalk.bold.green("Removing build dir."));
+    fs.rmSync(`${__dirname}/build`, {recursive: true});
+
+    fs.writeFileSync(`${__dirname}/Main/package.json`, JSON.stringify(packagedata));
+
+    await run(`cd ${__dirname}/Main && npm i`);
+}, 5000)
