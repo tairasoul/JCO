@@ -60,11 +60,11 @@ console.log(chalk.bold.blue("Installing all necessary packages."))
 
 await run(`cd ${__dirname}/build && npm install ${toInstall.trim()}`);
 
-await run(`cd ${__dirname}/build && npm install rfo.js`)
+await run(`cd ${__dirname}/build && npm install rfo.js typescript`)
 
 console.log(chalk.bold.blue("Building from source."))
 
-execSync(`cd ${__dirname}/build && tsc`);
+execSync(`cd ${__dirname}/build && npx tsc`);
 
 console.log(chalk.bold.blue("Removing unnecessary files."))
 
