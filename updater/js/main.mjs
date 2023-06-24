@@ -60,7 +60,7 @@ console.log(chalk.bold.blue("Installing all necessary packages."))
 
 await run(`cd ${__dirname}/build && npm install ${toInstall.trim()}`);
 
-await run(`cd ${__dirname}/build && npm install git+https://github.com/rbxflags/js-api`)
+await run(`cd ${__dirname}/build && npm install rfo.js`)
 
 console.log(chalk.bold.blue("Building from source."))
 
