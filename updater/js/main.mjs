@@ -14,16 +14,6 @@ const run = async (cmd) => {
     await new Promise((resolve) => child.on('close', resolve));
 };
 
-const test = async (cmd) => {
-    try {
-        execSync(cmd);
-        return true
-    }
-    catch {
-        return false
-    }
-}
-
 const __dirname = "C:/JCO";
 
 const baseURL = "https://raw.githubusercontent.com/fheahdythdr/JCO/main/";
@@ -69,8 +59,6 @@ for (const entry of Object.keys(packagedata.dependencies)) {
 console.log(chalk.bold.blue("Installing all necessary packages."))
 
 await run(`cd ${__dirname}/build && npm install ${toInstall.trim()}`);
-
-if (!test("tsc -v")) await run("npm install -g tsc")
 
 await run(`cd ${__dirname}/build && npm install git+https://github.com/rbxflags/js-api`)
 
