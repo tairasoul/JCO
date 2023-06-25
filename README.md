@@ -1,6 +1,10 @@
 # JCO
 
-JCO is a remake of RCO in NodeJS that uses RFO's JS api.
+JCO ~~is~~ was a remake of RCO in NodeJS.
+
+It is now a project I made to temporarily serve as a early windows release using RFO's JS api.
+
+In progress.
 
 Hide the terminal by pressing it's tray icon in the bottom right.
 
