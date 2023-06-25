@@ -86,7 +86,7 @@ start C:\\JCO\\Runner\\Frontend.exe`
 fs.writeFileSync('C:/JCO/Runner/run.bat', 
 `choice /d y /t 15 > nul
 
-start Frontend.exe`
+start C:/JCO/Runner/Frontend.exe`
 )
 
 try {
