@@ -30,9 +30,11 @@ export class Searcher {
             throw new Error(`Unsupported platform: ${platform}`);
 
         for (const searchPath of searchPaths) {
-            const version = (await axios.get("https://setup.rbxcdn.com/version")).data;
-            if (fs.existsSync(`${searchPath}${version}`)) {
-                versionDirectories.push(`${searchPath}${version}`)
+            const files = fs.readdirSync(`${searchPath}`);
+            for (const file of files) {
+                if (file.startsWith("version-")) {
+                    versionDirectories.push(`${searchPath}${file}`);
+                }
             }
         }
 
