@@ -1,3 +1,5 @@
+# Development of this project is on halt until I get the motivation to work on this again.
+
 # JCO
 
 JCO ~~is~~ was a remake of RCO in NodeJS.
