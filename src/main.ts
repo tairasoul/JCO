@@ -8,7 +8,6 @@ import * as defs from './definitions/index.js';
 import interrupt from 'inquirer-interrupted-prompt';
 import { Searcher } from './lib/searcher.js'
 import { default as axios } from 'axios';
-import ghcommit from "@bevry/github-commit";
 interrupt.fromAll(inquirer);
 
 const root = "C:\\JCO\\Main";
