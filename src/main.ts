@@ -12,7 +12,6 @@ import ghcommit from "@bevry/github-commit";
 interrupt.fromAll(inquirer);
 
 const root = "C:\\JCO\\Main";
-const upd = "C:\\JCO\\Updater"
 
 const searcher = new Searcher();
 
@@ -36,7 +35,7 @@ async function checkVersion() {
     if (!fs.existsSync(`${root}/data/commit.jco`)) fs.writeFileSync(`${root}/data/commit.jco`, '');
     try {
         // get latest github commit
-        const commit = await ghcommit("tairasoul/JCO");
+        const commit = (await ((await fetch("https://api.github.com/repos/tairasoul/JCO/commits?per_page=1")).json()))[0].sha;
         const ccommit = fs.readFileSync(`${root}/data/commit.jco`, 'utf8');
         if (ccommit != commit) {
             // inform user
