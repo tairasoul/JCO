@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(decodeURIComponent(fileURLToPath(import.meta.url)));
 const packagejson = JSON.parse(readFileSync(`${__dirname}/node_modules/rfo.js/package.json`))
 
-if (existsSync(__dirname + "/node_modules/rfo.js/modified.txt")) return;
+if (existsSync(__dirname + "/node_modules/rfo.js/modified.txt")) process.exit(0);
 
 packagejson.type = "module";
 
