@@ -76,17 +76,23 @@ fs.copyFileSync(`${__dirname}/main.mjs`, `C:/JCO/Installer/main.mjs`);
 fs.copyFileSync(`${__dirname}/prerun.mjs`, `C:/JCO/Installer/prerun.mjs`);
 
 fs.writeFileSync(`C:/JCO/Installer/run.bat`, 
-`node %cd%/prerun.mjs
+`
+cd /d C:/JCO/Installer/run.bat
+
+node %cd%/prerun.mjs
 
 node %cd%/main.mjs
 
-start C:\\JCO\\Runner\\Frontend.exe`
+cd C:/JCO/Runner
+
+start Frontend.exe`
 )
 
 fs.writeFileSync('C:/JCO/Runner/run.bat', 
-`choice /d y /t 15 > nul
+`
+cd C:/JCO/Runner
 
-start C:/JCO/Runner/Frontend.exe`
+start Frontend.exe`
 )
 
 try {
