@@ -104,4 +104,8 @@ setTimeout(async () => {
     fs.writeFileSync(`${__dirname}/Main/package.json`, JSON.stringify(packagedata));
 
     await run(`cd ${__dirname}/Main && npm i`);
+
+    const commit = (await ((await fetch("https://api.github.com/repos/tairasoul/JCO/commits?per_page=1")).json()))[0].sha;
+
+    fs.writeFileSync(`${__dirname}/Main/data/commit.jco`, commit);
 }, 5000)
