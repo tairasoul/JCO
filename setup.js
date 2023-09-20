@@ -1,8 +1,10 @@
-import { writeFileSync, readFileSync } from "fs";
+import { writeFileSync, readFileSync, existsSync } from "fs";
 import path from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(decodeURIComponent(fileURLToPath(import.meta.url)));
 const packagejson = JSON.parse(readFileSync(`${__dirname}/node_modules/rfo.js/package.json`))
+
+if (existsSync(__dirname + "/node_modules/rfo.js/modified.txt")) return;
 
 packagejson.type = "module";
 
@@ -20,3 +22,5 @@ const __dirname = path.dirname(decodeURIComponent(fileURLToPath(import.meta.url)
 const res = lines.join('\n');
 
 writeFileSync(__dirname + "/node_modules/rfo.js/dist/RFO.js", res)
+
+writeFileSync(__dirname + "/node_modules/rfo.js/modified.txt", "")
