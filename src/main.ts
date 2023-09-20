@@ -33,11 +33,11 @@ const prompt = async (config: defs.interfaces.InquirerConfig) => {
 }
 
 async function checkVersion() {
-    if (!fs.existsSync(`${root}/commit.jco`)) fs.writeFileSync(`${root}/commit.jco`, '');
+    if (!fs.existsSync(`${root}/data/commit.jco`)) fs.writeFileSync(`${root}/data/commit.jco`, '');
     try {
         // get latest github commit
         const commit = await ghcommit("tairasoul/JCO");
-        const ccommit = fs.readFileSync(`${root}/commit.jco`, 'utf8');
+        const ccommit = fs.readFileSync(`${root}/data/commit.jco`, 'utf8');
         if (ccommit != commit) {
             // inform user
             console.log(chalk.bold.red("Updating JCO to github commit " + commit))
@@ -54,6 +54,7 @@ async function checkVersion() {
         console.log(chalk.bold.red("Could not get latest JCO commit. JCO will continue anyways."))
     }
 }
+
 const data: defs.interfaces.DefaultData = {
     // @ts-ignore
     preprocessed: null,
@@ -77,7 +78,7 @@ const data: defs.interfaces.DefaultData = {
 
 async function init() {
     // check the version
-    console.log(chalk.bold.blue("Checking JCO version."));
+    console.log(chalk.bold.blue("Checking JCO commit."));
     await checkVersion();
     // find roblox
     console.log(chalk.bold.blue("Finding Roblox directories."));
