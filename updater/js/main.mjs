@@ -37,8 +37,8 @@ for (const file of files) {
     console.log(chalk.bold.green(`Downloading ${file}.`))
     if (typeof data == "object") fs.writeFileSync(`${__dirname}/build/${file}`, JSON.stringify(data));
     else fs.writeFileSync(`${__dirname}/build/${file}`, data);
-    console.log(chalk.bold.green(`Downloaded ${file}, waiting 1 second.`))
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log(chalk.bold.green(`Downloaded ${file}.`))
+    await new Promise((resolve) => setTimeout(resolve, 100));
 }
 
 console.log(chalk.bold.blue("Getting package.json data."))
