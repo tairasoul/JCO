@@ -39,7 +39,7 @@ await write("Updater/prerun.mjs", "updater/js/prerun.mjs");
 
 await write("Updater/main.mjs", "updater/js/main.mjs");
 
-await write("Runner/Frontend.exe", "Frontend.exe");
+if (!fs.existsSync("C:/JCO/Runner/Frontend.exe")) await write("Runner/Frontend.exe", "Frontend.exe");
 
 await write("Main/data/icon.ico", "other/JCOIcon.ico");
 
@@ -77,7 +77,7 @@ fs.copyFileSync(`${__dirname}/prerun.mjs`, `C:/JCO/Installer/prerun.mjs`);
 
 fs.writeFileSync(`C:/JCO/Installer/run.bat`, 
 `
-cd /d C:/JCO/Installer/run.bat
+cd /d C:/JCO/Installer
 
 node %cd%/prerun.mjs
 
