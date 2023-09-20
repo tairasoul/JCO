@@ -8,11 +8,11 @@ import * as defs from './definitions/index.js';
 import interrupt from 'inquirer-interrupted-prompt';
 import { Searcher } from './lib/searcher.js'
 import { default as axios } from 'axios';
+import ghcommit from "@bevry/github-commit";
 interrupt.fromAll(inquirer);
 
 const root = "C:\\JCO\\Main";
 const upd = "C:\\JCO\\Updater"
-const JCOversion = "1.0.2";
 
 const searcher = new Searcher();
 
@@ -33,12 +33,14 @@ const prompt = async (config: defs.interfaces.InquirerConfig) => {
 }
 
 async function checkVersion() {
+    if (!fs.existsSync(`${root}/commit.jco`)) fs.writeFileSync(`${root}/commit.jco`, '');
     try {
-        // get version
-        const version = (await axios.get("https://raw.githubusercontent.com/fheahdythdr/JCO/main/version.jco")).data.trim();
-        if (version != JCOversion) {
+        // get latest github commit
+        const commit = await ghcommit("tairasoul/JCO");
+        const ccommit = fs.readFileSync(`${root}/commit.jco`, 'utf8');
+        if (ccommit != commit) {
             // inform user
-            console.log(chalk.bold.red("Updating JCO to version " + version))
+            console.log(chalk.bold.red("Updating JCO to github commit " + commit))
             // update and exit after 2 seconds
             return new Promise<void>((resolve) => {
                 setTimeout(() => {
@@ -49,10 +51,9 @@ async function checkVersion() {
             })
         }
     } catch {
-        console.log(chalk.bold.red("Could not get JCO version. JCO will continue anyways."))
+        console.log(chalk.bold.red("Could not get latest JCO commit. JCO will continue anyways."))
     }
 }
-
 const data: defs.interfaces.DefaultData = {
     // @ts-ignore
     preprocessed: null,
