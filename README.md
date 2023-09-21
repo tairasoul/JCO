@@ -4,7 +4,7 @@
 
 JCO ~~is~~ was a remake of RCO in NodeJS.
 
-It is now a project I made to temporarily serve as a early windows release using RFO's JS api.
+It is now a project I made to temporarily serve as a early windows release using [RFO](https://dc.rfo.sh/)'s [JS api](https://github.com/rbxflags/js-api).
 
 In progress.
 
