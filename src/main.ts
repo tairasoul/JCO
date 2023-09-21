@@ -7,7 +7,6 @@ import chalk from 'chalk'
 import * as defs from './definitions/index.js';
 import interrupt from 'inquirer-interrupted-prompt';
 import { Searcher } from './lib/searcher.js'
-import { default as axios } from 'axios';
 interrupt.fromAll(inquirer);
 
 const root = "C:\\JCO\\Main";
@@ -62,16 +61,20 @@ const data: defs.interfaces.DefaultData = {
             LightingValue: "Allow Any",
             RendererValue: "Default"
         },
-        Privacy: {
-            enabled: false,
-            value: "Disabled"
-        },
         Experimental: {
             enabled: false,
             value: []
+        },
+        Main: {
+            enabled: false,
+            Graphics: {
+                value: "Disabled"
+            },
+            Privacy: {
+                value: "Disabled"
+            }
         }
-    },
-    setup: false
+    }
 }
 
 async function init() {
@@ -91,26 +94,28 @@ async function init() {
     if (!fs.existsSync(`${root}\\data\\isHidden.jco`)) fs.writeFileSync(`${root}\\data\\isHidden.jco`, 'f')
     // setup json
     if (!fs.existsSync(`${root}\\data\\enabled.json`)) 
-        fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify({
-            Rendering: {
-                enabled: false,
-                LightingValue: "Allow Any",
-                RendererValue: "Default"
-            },
-            Privacy: {
-                enabled: false,
-                value: "Disabled"
-            },
-            Experimental: {
-                enabled: false,
-                value: []
-            }
-        }))
+        fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify(data.enabled));
     else {
         const enabled = JSON.parse(fs.readFileSync(`${root}\\data\\enabled.json`, 'utf8'));
         data.enabled = enabled;
-        data.preprocessed[0].Main.enabled = enabled.Privacy.enabled;
-        data.preprocessed[0].Main.features[0].value = enabled.Privacy.value;
+        if (data.enabled.Main == undefined) data.enabled.Main = {
+            enabled: false,
+            Graphics: {
+                value: "Disabled"
+            },
+            Privacy: {
+                value: "Disabled"
+            }
+        }
+        else data.preprocessed[0].Main.enabled = data.enabled.Main.enabled;
+        if ("Privacy" in data.enabled) {
+            /** @ts-ignore */
+            data.enabled.Main.Privacy.value = data.enabled.Privacy.value;
+            /** @ts-ignore */
+            delete data.enabled.Privacy;
+        }
+        data.preprocessed[0].Main.features[0].value = data.enabled.Main.Privacy.value;
+        data.preprocessed[0].Main.features[1].value = enabled.Graphics.value;
         data.preprocessed[0].Rendering.enabled = enabled.Rendering.enabled;
         data.preprocessed[0].Rendering.features[1].value = enabled.Rendering.RendererValue;
         data.preprocessed[0].Rendering.features[0].value = enabled.Rendering.LightingValue;
@@ -118,8 +123,7 @@ async function init() {
         data.preprocessed[0].Experimental.features[0].value = enabled.Experimental.value;
     }
     console.log(chalk.bold.green("Successfully setup JCO. To hide this terminal window, click JCO's tray icon in the system tray (bottom right)."))
-    // completed setup
-    data.setup = true
+    ask();
 }
 
 const questions = {
@@ -130,7 +134,7 @@ const questions = {
                 type: 'list',
                 loop: false,
                 interruptedKeyName: 'b',
-                message: "Which renderer would you like to use?",
+                message: `Which renderer would you like to use? Currently using ${data.enabled.Rendering.RendererValue}.`,
                 choices: Object.keys(data.preprocessed[0].Rendering.features[1].options)
             });
             if (awnser) {
@@ -150,7 +154,7 @@ const questions = {
                 type: 'list',
                 loop: false,
                 interruptedKeyName: 'b',
-                message: "Which lighting engine would you like to use?",
+                message: `Which lighting engine would you like to use? Currently using ${data.enabled.Rendering.LightingValue}.`,
                 choices: Object.keys(data.preprocessed[0].Rendering.features[0].options)
             });
             if (awnser) {
@@ -170,14 +174,34 @@ const questions = {
                 type: 'list',
                 loop: false,
                 interruptedKeyName: 'b',
-                message: "Which privacy setting would you like to use?",
+                message: `Which privacy setting would you like to use? Currently using ${data.enabled.Main.Privacy.value}.`,
                 choices: Object.keys(data.preprocessed[0].Main.features[0].options)
             });
             if (awnser) {
                 // @ts-ignore
                 data.preprocessed[0].Main.features[0].value = awnser;
                 // @ts-ignore
-                data.enabled.Privacy.value = awnser;
+                data.enabled.Main.Privacy.value = awnser;
+                fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify(data.enabled, null, 4))
+            }
+            ask();
+        }
+    },
+    "Change Graphics Quality Fix": {
+        execute: async () => {
+            const awnser = await prompt({
+                name: "gqf",
+                type: 'list',
+                loop: false,
+                interruptedKeyName: 'b',
+                message: `Which graphics setting would you like to use? Currently using ${data.enabled.Main.Graphics.value}.`,
+                choices: Object.keys(data.preprocessed[0].Main.features[1].options)
+            });
+            if (awnser) {
+                // @ts-ignore
+                data.preprocessed[0].Main.features[1].value = awnser;
+                // @ts-ignore
+                data.enabled.Main.Graphics.value = awnser;
                 fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify(data.enabled, null, 4))
             }
             ask();
@@ -190,7 +214,7 @@ const questions = {
                 type: 'checkbox',
                 loop: false,
                 interruptedKeyName: 'b',
-                message: "Which experimental flags would you like to use?",
+                message: `Which experimental flags would you like to use? Currently using ${data.enabled.Experimental.value.join(" and ")}.`,
                 choices: Object.keys(data.preprocessed[0].Experimental.features[0].options)
             });
             if (awnser) {
@@ -204,26 +228,20 @@ const questions = {
         }
     },
     "Enable Flags": {
-        execute: async (options) => {
+        execute: async () => {
             const awnser = await prompt({
                 name: "flags",
                 type: 'checkbox',
                 loop: false,
                 interruptedKeyName: 'b',
                 message: "Which flags would you like to enable?",
-                choices: options
+                choices: Object.keys(data.preprocessed[0]).filter((v) => data.enabled[v].enabled == false)
             });
             if (awnser) {
                 // @ts-ignore
                 for (const item of awnser) {
-                    if (item == "Privacy") {
-                        data.preprocessed[0].Main.enabled = true;
-                        data.enabled.Privacy.enabled = true;
-                    }
-                    else {
-                        data.preprocessed[0][item].enabled = true;
-                        data.enabled[item].enabled = true;
-                    }
+                    data.preprocessed[0][item].enabled = true;
+                    data.enabled[item].enabled = true;
                 }
                 fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify(data.enabled, null, 4))
             }
@@ -231,36 +249,51 @@ const questions = {
         }
     },
     "Disable Flags": {
-        execute: async (options) => {
+        execute: async () => {
             const awnser = await prompt({
                 name: "flags",
                 type: 'checkbox',
                 loop: false,
                 interruptedKeyName: 'b',
                 message: "Which flags would you like to disable?",
-                choices: options
+                choices: Object.keys(data.preprocessed[0]).filter((v) => data.enabled[v].enabled == true)
             });
             if (awnser) {
                 // @ts-ignore
                 for (const item of awnser) {
-                    if (item == "Privacy") {
-                        data.preprocessed[0].Main.enabled = false;
-                        data.enabled.Privacy.enabled = false;
-                    }
-                    else {
-                        data.preprocessed[0][item].enabled = false;
-                        data.enabled[item].enabled = false;
-                    }
+                    data.preprocessed[0][item].enabled = false;
+                    data.enabled[item].enabled = false;
                 }
                 fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify(data.enabled, null, 4));
             }
             ask();
         }
+    },
+    "Check for Update": {
+        execute: async () => {
+            const commit = (await ((await fetch("https://api.github.com/repos/tairasoul/JCO/commits?per_page=1")).json()))[0].sha;
+            const ccommit = fs.readFileSync(`${root}/data/commit.jco`, 'utf8');
+            if (ccommit != commit) {
+                // inform user
+                console.log(chalk.bold.red("Found a newer update for JCO, updating in 5 seconds."))
+                // update and exit after 2 seconds
+                return new Promise<void>((resolve) => {
+                    setTimeout(() => {
+                        console.log(chalk.bold.red("Updating JCO to github commit " + commit))
+                        childproc.exec("C:/JCO/Installer/run.bat", () => {});
+                        resolve();
+                        exit(0);
+                    }, 5000)
+                })
+            }
+            else {
+                console.log(chalk.bold.green("No updates found. You are on the latest version."));
+            }
+        }
     }
 }
 
 async function ask() {
-    if (!data.setup) await init();
     const awnser = await prompt({
         name: "option",
         type: 'list',
@@ -268,21 +301,14 @@ async function ask() {
         message: "What would you like to do?",
         choices: Object.keys(questions)
     });
-    if (awnser == "Enable Flags")
-        // @ts-ignore
-        await questions[awnser].execute(Object.keys(data.enabled).filter((v) => data.enabled[v].enabled == false))
-    else if (awnser == "Disable Flags")
-        // @ts-ignore
-        await questions[awnser].execute(Object.keys(data.enabled).filter((v) => data.enabled[v].enabled == true))
-    else
-        // @ts-ignore
-        await questions[awnser].execute()
+    /** @ts-ignore */
+    await questions[awnser].execute()
 }
 
 setInterval(async () => {
     // find roblox each time just incase it updates while JCO is active
     await rfo.findRoblox();
     rfo.applyFlags();
-}, 20000)
+}, 20000);
 
-ask();
+init();
