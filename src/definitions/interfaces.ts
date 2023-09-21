@@ -21,10 +21,14 @@ export interface DefaultData {
             enabled: boolean;
             value: string[];
         };
-        Privacy: {
+        Main: {
             enabled: boolean;
-            value: string;
-        };
+            Graphics: {
+                value: string;
+            };
+            Privacy: {
+                value: string;
+            };
+        }
     };
-    setup: boolean;
 }
