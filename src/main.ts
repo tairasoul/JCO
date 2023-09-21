@@ -115,7 +115,7 @@ async function init() {
             delete data.enabled.Privacy;
         }
         data.preprocessed[0].Main.features[0].value = data.enabled.Main.Privacy.value;
-        data.preprocessed[0].Main.features[1].value = enabled.Graphics.value;
+        data.preprocessed[0].Main.features[1].value = enabled.Main.Graphics.value;
         data.preprocessed[0].Rendering.enabled = enabled.Rendering.enabled;
         data.preprocessed[0].Rendering.features[1].value = enabled.Rendering.RendererValue;
         data.preprocessed[0].Rendering.features[0].value = enabled.Rendering.LightingValue;
