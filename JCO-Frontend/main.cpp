@@ -121,6 +121,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 
 int main(int argc, char** argv) {
     SetConsoleTitle(L"JCO");
+    if (std::filesystem::exists(rootDir + "\\isHidden.jco")) {
+        std::ifstream hidden(rootDir + "\\isHidden.jco");
+        hidden.seekg(0, std::ios::end);
+        size_t size = hidden.tellg();
+        string buffer(size, ' ');
+        hidden.seekg(0);
+        hidden.read(&buffer[0], size);
+        isConsoleHidden = (rtrim(buffer).starts_with("t"));
+    }
 
     //Handle Hidden Value
     if (isConsoleHidden) {
@@ -136,9 +145,39 @@ int main(int argc, char** argv) {
     std::thread t1(traySystem);
 
     while (true) {
-        system("node C:/JCO/Main/main.js");
-        std::cout << "JCO has crashed. Restarting in 5 seconds.";
-        std::this_thread::sleep_for(std::chrono::seconds(5));
-        system("cls");
+        const auto exitCode = system("node C:/JCO/Main/main.js");
+        if (exitCode != 0) {
+            std::cout << "JCO has crashed. Restarting in 5 seconds.";
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            system("cls");
+        }
+        else {
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            STARTUPINFOA si;
+            PROCESS_INFORMATION pi;
+
+            ZeroMemory(&si, sizeof(si));
+            si.cb = sizeof(si);
+            ZeroMemory(&pi, sizeof(pi));
+
+            std::string bat = "C:/JCO/Installer/run.bat";
+
+            // Start the child process. 
+            CreateProcessA(bat.c_str(),   // No module name (use command line)
+                NULL,        // Command line
+                NULL,           // Process handle not inheritable
+                NULL,           // Thread handle not inheritable
+                FALSE,          // Set handle inheritance to FALSE
+                0,              // No creation flags
+                NULL,           // Use parent's environment block
+                NULL,           // Use parent's starting directory 
+                &si,            // Pointer to STARTUPINFO structure
+                &pi);           // Pointer to PROCESS_INFORMATION structure
+
+            // Close process and thread handles. 
+            CloseHandle(pi.hProcess);
+            CloseHandle(pi.hThread);
+            exit(0);
+        }
     }
 }
