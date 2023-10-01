@@ -93,9 +93,10 @@ async function init() {
     // setup isHidden file for C++ frontend
     if (!fs.existsSync(`${root}\\data\\isHidden.jco`)) fs.writeFileSync(`${root}\\data\\isHidden.jco`, 'f')
     // setup json
-    if (!fs.existsSync(`${root}\\data\\enabled.json`)) 
+    if (!fs.existsSync(`${root}\\data\\enabled.json`))  {
         console.log(chalk.bold.blue("Setting up enabled.json."));
         fs.writeFileSync(`${root}\\data\\enabled.json`, JSON.stringify(data.enabled));
+    }
     else {
         console.log(chalk.bold.blue("Reading saved settings."))
         const enabled = JSON.parse(fs.readFileSync(`${root}\\data\\enabled.json`, 'utf8'));
