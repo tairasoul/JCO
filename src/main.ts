@@ -291,6 +291,7 @@ const questions = {
             }
             else {
                 console.log(chalk.bold.green("No updates found. You are on the latest version."));
+                ask();
             }
         }
     }
