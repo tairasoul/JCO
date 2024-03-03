@@ -1,4 +1,4 @@
-# Development of this project is on halt until I get the motivation to work on this again.
+# Archived as of 03/03/2024 due to manually setting FFlags not being a thing anymore.
 
 # JCO
 
